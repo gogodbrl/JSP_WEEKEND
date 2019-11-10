@@ -1,17 +1,16 @@
 package Main;
 
-import Dao.MemberDao;
+import Dao.BoardDao;
 
-public class MemberDelete {
+public class BoardDelete {
 	/*************************************
 	 * Main
 	 ************************************/
 	public static void main(String[] args) {
-		String id = "kim";
-		int cnt = -1;
+		int no = 1;
 		
-		MemberDao dao = new MemberDao();
-		cnt = dao.DeleteMember(id);
+		BoardDao dao = new BoardDao();	
+		int cnt = dao.DeleteBoard(no);
 		if(cnt > -1) {
 			System.out.println("질의 성공");
 		} else {

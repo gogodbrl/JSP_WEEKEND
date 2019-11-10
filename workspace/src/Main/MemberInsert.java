@@ -18,7 +18,7 @@ public class MemberInsert {
 		bean.setName("최영");
 		bean.setSalary(1234);
 		
-		cnt = dao.MemberInsertDao(bean);
+		cnt = dao.InsertMember(bean);
 		if(cnt != -1) {
 			System.out.println("질의 성공");
 		} else {

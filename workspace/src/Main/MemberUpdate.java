@@ -18,7 +18,7 @@ public class MemberUpdate {
 		bean.setAddress("서울시 관악구");
 		bean.setSalary(7776);
 		
-		cnt = dao.MemberUpdateDao(bean);
+		cnt = dao.UpdateMember(bean);
 		if(cnt != -1) {
 			System.out.println("질의 성공");
 		} else {
