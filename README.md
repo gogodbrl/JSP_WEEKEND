@@ -6,4 +6,5 @@
 1. SQL 실습부분은 oracle_query에 작성함
 2. 소스코드 실습부분은 workspace에 작성함
 
-
+강사님 블로그 위치
+https://cafe.naver.com/ugcadman
