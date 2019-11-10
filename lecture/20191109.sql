@@ -1,3 +1,10 @@
+
+--°ü¸®ÀÚ
+create user oraman identified by oracle account unlock;
+grant connect, resource to oraman;
+--------------------------------------------
+
+
 create table oraman.members(
     id varchar2(10) primary key,
     name varchar2(255),
