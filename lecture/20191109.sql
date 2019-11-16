@@ -2,8 +2,9 @@
 --관리자
 create user oraman identified by oracle account unlock;
 grant connect, resource to oraman;
---------------------------------------------
+create synonym oraman.testseq for oraman.seqtest; 
 
+--------------------------------------------
 
 create table oraman.members(
     id varchar2(10) primary key,
@@ -21,8 +22,14 @@ commit;
 update members set address='용산구 삼각지역'
 where id='hong';
 
-insert into members(id, name, salary, hiredate, address)
+insert into oraman.members(id, name, salary, hiredate, address)
 values ('kim', '김철수', 5000, '1992/11/09', '은평구 응암동');
+
+insert into oraman.members(id, name, salary, hiredate, address)
+values ('kang', '강철수', 5000, '1992/11/09', '은평구 응암동');
+
+insert into oraman.members(id, name, salary, hiredate, address)
+values ('hong', '홍철수', 5000, '1992/11/09', '은평구 응암동');
 
 update members set address = '은평구 123', salary = 5000 
 where id='kim';
@@ -35,8 +42,12 @@ select * from members;
 -- dual ( dummy ) 
 select UPPER('abcd') from dual;
 
-create sequence seqtest;
-create table boards(
+create sequence oraman.seqtest;
+commit;
+
+drop table boards;
+
+create table oraman.boards(
     no number primary key,
     subject varchar2(255),
     writer varchar2(255),
@@ -45,19 +56,19 @@ create table boards(
 );
 -- writer가 아닌 사람들은 insert하지 못하게 한다.
 -- 참조무결성 제약조건
-alter table boards
-add constraint boards_fk1111
-foreign key(writer) references members(id)
+alter table oraman.boards
+add constraint boards_fk
+foreign key(writer) references oraman.members(id)
 on delete set null;
 
-insert into boards(no, subject, writer, content)
+insert into oraman.boards(no, subject, writer, content)
 values(SEQTEST.nextval, '가가', 'hong', '재미있는 글');
 
 -- 제약조건 위배 ( member 테이블에 없는 writer는 insert 되지 않는다.)
-insert into boards(no, subject, writer, content)
+insert into oraman.boards(no, subject, writer, content)
 values(SEQTEST.nextval, '나나', 'kang', '재미있는 글_hong');
 
-insert into boards(no, subject, writer, content)
+insert into oraman.boards(no, subject, writer, content)
 values(SEQTEST.nextval, '다다', 'kim', '재미있는 글_kim');
 
 commit;

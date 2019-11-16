@@ -12,9 +12,9 @@ public class BoardInsert {
 		int cnt = -1;
 		
 		Board bean = new Board();
-		bean.setSubject("Test");
-		bean.setWriter("kim2");
-		bean.setRegdate("2019/11/10");
+		bean.setSubject("Test3");
+		bean.setWriter("kim3");
+//		bean.setRegdate("2019/11/10");
 		bean.setContent("만나서 반갑습니다");
 		
 		cnt = dao.InsertBoard(bean);

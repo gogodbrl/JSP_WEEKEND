@@ -1,5 +1,6 @@
 package Dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Bean.Board;
@@ -85,9 +86,46 @@ public class BoardDao extends JdbcConnector {
 	 * 하나의 게시물 조회 : SelectBoardOne
 	 ************************************/
 	public List<Board> SelectBoardAll() {
+		try {
+			if(conn == null) { JdbcConnect(); }
+			
+			String sql = "select * from boards";
+			List<Board> selectList = new ArrayList<Board>();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery(); 
+			while(rs.next()) {
+				Board bean = new Board();
+				bean.setNo(rs.getInt("no"));
+				bean.setContent(rs.getString("content"));
+				bean.setRegdate(rs.getString("regdate"));
+				bean.setSubject(rs.getString("subject"));
+				bean.setWriter(rs.getString("writer"));
+				selectList.add(bean);
+			}
+			return selectList;
+		} catch (Exception e) {	e.printStackTrace(); }
 		return null;
 	}
-	public Board SelectBoardOne() {
+	public Board SelectBoardOne(String writer) {
+		String sql = "select * from boards where writer=?";
+		try {
+			if(conn == null) { JdbcConnect(); }
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, writer);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				Board bean = new Board();
+				bean.setNo(rs.getInt("no"));
+				bean.setContent(rs.getString("content"));
+				bean.setRegdate(rs.getString("regdate"));
+				bean.setSubject(rs.getString("subject"));
+				bean.setWriter(rs.getString("writer"));
+				return bean;
+			}
+		} catch (Exception e) { e.printStackTrace(); } 
+		finally { JdbcClose(); }
 		return null;
 	}
 }
