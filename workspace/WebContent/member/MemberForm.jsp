@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<form action= "insertTo.jsp">
+<!-- MemberForm.jsp -> insertBoard.jsp -> selectMemberAll.jsp -->
+<form action= "insertMember.jsp" method="post">
 	<table border="1">
-		<tr>	
+		<tr>
 			<td>아이디</td>
-			<!-- db에 컬럼과 name 값을 똑같이 맞춰주는게 좋다. -->
 			<td><input type="text" name="id"></td>
 		</tr>
 		<tr>

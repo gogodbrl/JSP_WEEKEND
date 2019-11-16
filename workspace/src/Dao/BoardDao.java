@@ -23,8 +23,8 @@ public class BoardDao extends JdbcConnector {
 	 *************************************/
 	public int InsertBoard(Board bean) {
 		int cnt = -1;
-		String sql = "insert into boards(no, subject, writer, content, regdate)";
-		sql += " values(SEQTEST.nextval,?,?,?,?)";
+		String sql = "insert into boards(no, subject, writer, content)";
+		sql += " values(SEQTEST.nextval,?,?,?)";
 		try {
 			if(conn == null) { JdbcConnect(); }
 			
@@ -32,7 +32,6 @@ public class BoardDao extends JdbcConnector {
 			pstmt.setString(1, bean.getSubject());
 			pstmt.setString(2, bean.getWriter());
 			pstmt.setString(3, bean.getContent());
-			pstmt.setString(4, bean.getRegdate());
 			
 			cnt = pstmt.executeUpdate();
 			conn.commit();
