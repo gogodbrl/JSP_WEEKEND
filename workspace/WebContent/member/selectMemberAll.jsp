@@ -9,19 +9,26 @@
 </head>
 <body>
 <%
-	/** SELECT ALL로 조회한다.
-	**/
+	/** GET PROJECT NAME ( /WebProject라는 String 반환 ) **/
+	String contextPath = request.getContextPath();
+	String memberPath = contextPath + "/member";
+//	out.print(memberPath);
+
+	/** SELECT ALL로 조회한다.**/
 	MemberDao dao = new MemberDao();
 	List<Member> memberList = dao.SelectMemberAll();
 %>
 <h3>회원 목록 보기</h3>
 <table border ="1">
 	<tr>
-		<td>아이디</td>
-		<td>이름</td>
-		<td>급여</td>
-		<td>입사날짜</td>
-		<td>주소</td>
+		<th>아이디</th>
+		<th>이름</th>
+		<th>급여</th>
+		<th>입사날짜</th>
+		<th>주소</th>
+		<th>상세</th>
+		<th>수정</th>
+		<th>삭제</th>
 	</tr>
 
 	<!-- 이렇게 스크립트릿을 사용하면 값을 리스트로 출력 가능하다. -->
@@ -34,6 +41,11 @@
 		<td><%=member.getSalary() %></td>
 		<td><%=member.getHiredate() %></td>
 		<td><%=member.getAddress() %></td>
+		<!-- 우리가 kim을 보려는지, kang을 보려는 지 분기처리를 여기서 해주어야 한다. 
+		근데 여기서 get으로 받는 지 post로 받는 지 어떻게 알지? -->
+		<td><a href="<%=memberPath %>/MemberDetail.jsp?id=<%=member.getId()%>">상세</a></td>
+		<td>수정</td>
+		<td>삭제</td>
 	</tr>
 	<% } %>
 </table>

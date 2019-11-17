@@ -5,6 +5,10 @@
 <%
 	request.setCharacterEncoding("utf-8");
 
+	/** GET PROJECT NAME ( /WebProject라는 String 반환 ) **/
+	String contextPath = request.getContextPath();
+	String boardPath = contextPath + "/board";
+
 	BoardDao dao = new BoardDao();
 	List<Board> boardList = dao.SelectBoardAll();
 %>
@@ -35,6 +39,7 @@
 		<td><%=board.getWriter() %></td>
 		<td><%=board.getContent() %></td>
 		<td><%=board.getRegdate() %></td>
+		<td><a href="<%=boardPath %>/BoardDetail.jsp?writer=<%=board.getWriter()%>">상세</a></td>
 	</tr>
 	<% } %>
 </table>
