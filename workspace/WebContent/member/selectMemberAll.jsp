@@ -19,6 +19,7 @@
 	List<Member> memberList = dao.SelectMemberAll();
 %>
 <h3>회원 목록 보기</h3>
+<h4><a href="<%=memberPath %>/insertForm.jsp"> 신규사용자 등록 </a></h4>
 <table border ="1">
 	<tr>
 		<th>아이디</th>
@@ -44,7 +45,7 @@
 		<!-- 우리가 kim을 보려는지, kang을 보려는 지 분기처리를 여기서 해주어야 한다. 
 		근데 여기서 get으로 받는 지 post로 받는 지 어떻게 알지? -->
 		<td><a href="<%=memberPath %>/MemberDetail.jsp?id=<%=member.getId()%>">상세</a></td>
-		<td>수정</td>
+		<td><a href="<%=memberPath %>/updateForm.jsp?id=<%=member.getId()%>">수정</a></td>
 		<td>삭제</td>
 	</tr>
 	<% } %>

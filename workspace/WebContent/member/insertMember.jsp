@@ -8,7 +8,6 @@ contentType : 우리가 보는 최종 타입은 text/html 문서로 바뀐다는
 pageEncoding : 이 페이지에서 보내거나 받아서 해석하는 방식은 UTF-8을 사용하겠다는 의미 -->
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
 <!--  
 	1. 이 문법을 스크립트 릿(Scriptlit)이라고 한다. 
 	2. request와 out등은 servlet 내장객체로 제공한다.
@@ -39,7 +38,7 @@ pageEncoding : 이 페이지에서 보내거나 받아서 해석하는 방식은
 	if(cnt > 0) { 
 		response.sendRedirect("selectMemberAll.jsp");
 	} else {
-		out.print("실패");
+		out.print("DB INSERT 실패");
 	}
 %>
 <!DOCTYPE html>

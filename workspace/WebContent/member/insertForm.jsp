@@ -5,7 +5,9 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<!-- MemberForm.jsp -> insertBoard.jsp -> selectMemberAll.jsp -->
+<!-- 
+	insertForm.jsp -> insertBoard.jsp -> selectMemberAll.jsp 
+-->
 <form action= "insertMember.jsp" method="post">
 	<table border="1">
 		<tr>
@@ -32,6 +34,7 @@
 			<td colspan="2">
 				<input type="submit" value="전송">
 				<input type="reset" value="취소">
+				<a href="javascript:history.go(-1)"><input type="button" value="뒤로가기"></a>
 			</td>
 		</tr>
 	</table>

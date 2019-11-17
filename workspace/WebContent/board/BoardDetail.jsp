@@ -11,7 +11,7 @@
 		String contextPath = request.getContextPath();
 		String errorPath = contextPath + "/error/Error.jsp?redirectPath=/board/selectBoardAll"; 
 		response.sendRedirect(errorPath); //이 때 인자값이 같이 넘어가는거 같음 
-		return ; //이걸 써줘야 함
+		return ; //이걸 써줘야 더이상 실행하지 않는 듯 ( 자바 메소드 느낌  )
 	}
 	/** GET DB DATA **/
 	BoardDao dao = new BoardDao();

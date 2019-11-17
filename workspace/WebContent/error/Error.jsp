@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%
 	String redirectPath = request.getParameter("redirectPath");
+	/** redirectPath가 null일 경우에도 예외처리가 필요할 듯 ==> 몰라 나중에 **/
 	String contactPath = request.getContextPath();
 %>
 <!DOCTYPE html>

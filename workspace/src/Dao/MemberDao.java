@@ -101,7 +101,7 @@ public class MemberDao extends JdbcConnector {
 			while(rs.next()) {
 				Member bean = new Member();
 				bean.setAddress(rs.getString("address"));
-				bean.setHiredate(rs.getString("hiredate"));
+				bean.setHiredate(String.valueOf(rs.getDate("hiredate")));
 				bean.setId(rs.getString("id"));
 				bean.setName(rs.getString("name"));
 				bean.setSalary(rs.getInt("salary"));
@@ -125,7 +125,7 @@ public class MemberDao extends JdbcConnector {
 			if(rs.next()) {
 				Member bean = new Member();
 				bean.setAddress(rs.getString("address"));
-				bean.setHiredate(rs.getString("hiredate"));
+				bean.setHiredate(String.valueOf(rs.getDate("hiredate")));
 				bean.setId(rs.getString("id"));
 				bean.setName(rs.getString("name"));
 				bean.setSalary(rs.getInt("salary"));
