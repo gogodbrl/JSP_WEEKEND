@@ -20,6 +20,7 @@
 	bean.setName(name);
 	bean.setSalary(salary);
 	
+	/** REDIRECT IF SUCCESS **/
 	int cnt = dao.UpdateMember(bean);
 	if(cnt > 0) { 
 		response.sendRedirect("selectMemberAll.jsp");

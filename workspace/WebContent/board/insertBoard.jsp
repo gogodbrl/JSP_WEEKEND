@@ -14,10 +14,12 @@
 	bean.setWriter(writer);
 	bean.setContent(content);
 	
-	dao.InsertBoard(bean);
-%>
-<%
-	response.sendRedirect("selectBoardAll.jsp");
+	int cnt = dao.InsertBoard(bean);
+	if(cnt > 0) { 
+		response.sendRedirect("selectBoardAll.jsp");
+	} else {
+		out.print("DB INSERT 실패 - 3초후 이동");
+	}
 %>
 <!DOCTYPE html>
 <html>

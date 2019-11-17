@@ -6,8 +6,8 @@
 	request.setCharacterEncoding("utf-8");
 
 	/** GET PARAM **/
-	String writer = request.getParameter("writer");
-	if(writer == null || "null".equalsIgnoreCase(writer)) {
+	String no = request.getParameter("no");
+	if(no == null || "null".equalsIgnoreCase(no)) {
 		String contextPath = request.getContextPath();
 		String errorPath = contextPath + "/error/Error.jsp?redirectPath=/board/selectBoardAll"; 
 		response.sendRedirect(errorPath); //이 때 인자값이 같이 넘어가는거 같음 
@@ -15,7 +15,7 @@
 	}
 	/** GET DB DATA **/
 	BoardDao dao = new BoardDao();
-	Board board = dao.SelectBoardOne(writer);
+	Board board = dao.SelectBoardOne(no);
 %>
 <!DOCTYPE html>
 <html>

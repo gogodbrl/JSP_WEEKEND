@@ -29,6 +29,7 @@ public class MemberDao extends JdbcConnector {
 		int cnt = -1;
 		String sql = "insert into members(id, name, salary, hiredate, address)";
 		sql += " values(?,?,?,?,?)";
+		System.out.println("[InsertMember] "+sql);
 		try {
 			if(conn == null) { JdbcConnect(); }
 			
@@ -51,6 +52,7 @@ public class MemberDao extends JdbcConnector {
 		String sql = "update members";
 		sql += " set name=?, salary=?,hiredate=?, address=?";
 		sql += " where id=?";
+		System.out.println("[UpdateMember] "+sql);
 		try {
 			if(conn == null) { JdbcConnect(); }
 			
@@ -71,6 +73,7 @@ public class MemberDao extends JdbcConnector {
 	public int DeleteMember(String id) {
 		int cnt = -1;
 		String sql = "delete from members where id=?";
+		System.out.println("[DeleteMember] "+sql);
 		try {
 			if(conn == null) { JdbcConnect(); }
 			
@@ -92,6 +95,7 @@ public class MemberDao extends JdbcConnector {
 	public List<Member> SelectMemberAll() {
 		String sql = "select * from members";
 		List<Member> list = new ArrayList<Member>();
+		System.out.println("[SelectMemberAll] "+sql);
 		try {
 			if(conn == null) { JdbcConnect(); }
 			
@@ -115,12 +119,12 @@ public class MemberDao extends JdbcConnector {
 	}
 	public Member SelectMemberOne(String id) {
 		String sql = "select * from members where id=?";
+		System.out.println("[SelectMemberOne] "+sql);
 		try {
 			if(conn == null) { JdbcConnect(); }
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
-			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				Member bean = new Member();

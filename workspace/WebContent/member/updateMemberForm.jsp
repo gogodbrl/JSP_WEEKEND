@@ -3,8 +3,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	String id = request.getParameter("id");
+	if(id == null || "null".equalsIgnoreCase(id)) {
+		String contextPath = request.getContextPath();
+		String errorMemberPath = contextPath + "/error/Error.jsp?redirectPath=/member/selectMemberAll"; 
+		response.sendRedirect(errorMemberPath); 
+		return ;
+	}
+
 	MemberDao dao = new MemberDao();
-	
 	Member bean = dao.SelectMemberOne(id);
 %>
 <!DOCTYPE html>

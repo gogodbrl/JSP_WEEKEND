@@ -20,6 +20,7 @@
 </head>
 <body>
 <h3>게시글 전체 목록 보기</h3>
+<h4><a href="<%=boardPath %>/insertBoardForm.jsp"> 신규 게시글 등록 </a></h4>
 <table border ="1">
 	<tr>
 		<td>게시글번호</td>
@@ -39,7 +40,9 @@
 		<td><%=board.getWriter() %></td>
 		<td><%=board.getContent() %></td>
 		<td><%=board.getRegdate() %></td>
-		<td><a href="<%=boardPath %>/BoardDetail.jsp?writer=<%=board.getWriter()%>">상세</a></td>
+		<td><a href="<%=boardPath %>/selectBoardDetail.jsp?no=<%=board.getNo()%>">상세</a></td>
+		<td><a href="<%=boardPath %>/updateBoardForm.jsp?no=<%=board.getNo()%>">수정</a></td>
+		<td><a href="<%=boardPath %>/deleteBoard.jsp?no=<%=board.getNo()%>">삭제</a></td>
 	</tr>
 	<% } %>
 </table>
