@@ -1,17 +1,26 @@
+<%@page import="Util.Paging"%>
 <%@page import="Bean.Board"%>
 <%@page import="java.util.List"%>
 <%@page import="Dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file= "../common/paging.jsp" %>
 <%
 	request.setCharacterEncoding("utf-8");
 
-	/** GET PROJECT NAME ( /WebProject라는 String 반환 ) **/
 	String contextPath = request.getContextPath();
 	String boardPath = contextPath + "/board";
+	
+//	String pageNumber = request.getParameter("pageNumber");
+//	String pageSize = request.getParameter("pageSize");
+//	int totalCount = 13;
+//	String url = "../board/selectBoardAll.jsp";
 
+//	Paging pageInfo = new Paging(pageNumber, pageSize, totalCount, url);
+	
 	BoardDao dao = new BoardDao();
-	List<Board> boardList = dao.SelectBoardAll();
+	List<Board> boardList = dao.SelectBoardAll(pageInfo.getBeginRow(),pageInfo.getEndRow());
 %>
+
 
 <!DOCTYPE html>
 <html>
@@ -45,6 +54,9 @@
 		<td><a href="<%=boardPath %>/deleteBoard.jsp?no=<%=board.getNo()%>">삭제</a></td>
 	</tr>
 	<% } %>
+	<tr>
+		<td colspan="8"><%=pageInfo.getPagingHtml(url) %></td>
+	</tr>
 </table>
 </body>
 </html>

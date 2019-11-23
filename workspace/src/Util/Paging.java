@@ -55,23 +55,22 @@ public class Paging {
 		this.url = url;
 		
 		/** 전체 페이지 갯수 **/
-		this.totalPage 	= (int) Math.ceil(totalCount / pageSize);
+		this.totalPage 	= (int) Math.ceil((double) totalCount / pageSize);
 		
 		/** 첫번째 값 : beginRow, 마지막 값 : endRow **/
 		this.beginRow 	= (( pageNumber -1 ) * pageSize) + 1 ;
 		this.endRow		= pageNumber * pageSize ;
 		
 		/** 페이지 첫번째 값 : beginPage, 페이지 마지막 값 : endPage **/
-		this.beginPage 	= (((pageNumber -1) / pageSize) * pageSize) + 1;
-		this.endPage	= beginPage + pageSize - 1;
-		if(this.endPage > this.totalPage) {
-			this.endPage = totalPage;
-		}
-		this.pagingHtml = this.getPagingHtml();
+		this.beginPage 	= ((pageNumber -1) / (pageCount * pageCount)) + 1;
+		this.endPage	= beginPage + pageCount - 1;
+		if(this.endPage > this.totalPage) { this.endPage = totalPage; }
+		
+		this.pagingHtml = this.getPagingHtml(url);
 		/** 총 13건 [1/2] **/
 		this.pagingStatus =  String.format("총 %s건[%s/%s]", totalCount, pageNumber, totalPage);
 		
-//		this.DisplayInformation();
+		this.DisplayInformation();
 	}
 	
 	/*************************************
@@ -123,6 +122,7 @@ public class Paging {
 	 * DisplayInformation
 	 ************************************/
 	public void DisplayInformation() {
+		System.out.println("------------------------------------");
 		System.out.println("totalCount		: " + totalCount);
 		System.out.println("totalPage		: " + totalPage);
 		System.out.println("pageSize 		: " + pageSize);
@@ -137,6 +137,7 @@ public class Paging {
 		System.out.println("url 			: " + url);
 		System.out.println("pagingHtml 		: " + getPagingHtml(url));
 		System.out.println("pagingStatus 		: " + pagingStatus);
+		System.out.println("------------------------------------");
 	}
 	
 	/*************************************

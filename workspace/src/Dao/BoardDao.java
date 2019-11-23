@@ -83,7 +83,8 @@ public class BoardDao extends JdbcConnector {
 	}
 	
 	/*************************************
-	 * 모든 게시물 조회 : SelectBoardAll
+	 * 모든 게시물 조회 : SelectBoardAll()
+	 * 모든 게시물 조회 : SelectBoardAll(int beginRow, int endRow)
 	 * 하나의 게시물 조회 : SelectBoardOne
 	 ************************************/
 	public List<Board> SelectBoardAll() {
@@ -94,6 +95,36 @@ public class BoardDao extends JdbcConnector {
 
 			List<Board> selectList = new ArrayList<Board>();
 			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery(); 
+			while(rs.next()) {
+				Board bean = new Board();
+				bean.setNo(rs.getInt("no"));
+				bean.setContent(rs.getString("content"));
+				bean.setRegdate(String.valueOf(rs.getDate("regdate")) );
+				bean.setSubject(rs.getString("subject"));
+				bean.setWriter(rs.getString("writer"));
+				selectList.add(bean);
+			}
+			return selectList;
+		} catch (Exception e) {	e.printStackTrace(); }
+		return null;
+	}
+	public List<Board> SelectBoardAll(int beginRow, int endRow) {
+		String sql = " select no, subject, writer, content, regdate"
+				+ " from (select no, subject, writer, content, regdate, "
+				+ " rank() over(order by no desc) as ranking"
+				+ " from boards ) "
+				+ " where ranking between ? and ? ";
+		
+		System.out.println("[SelectBoardAll] "+sql);
+		try {
+			if(conn == null) { JdbcConnect(); }
+
+			List<Board> selectList = new ArrayList<Board>();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, beginRow);
+			pstmt.setInt(2, endRow);
+			
 			rs = pstmt.executeQuery(); 
 			while(rs.next()) {
 				Board bean = new Board();
