@@ -16,8 +16,8 @@ public class MemberDao extends JdbcConnector {
 	public MemberDao() {
 		if(JdbcConnect()) { 
 			AutoCommit(false);
-			System.out.println("JDBC 접속 객체 성공"); 
-		} else { System.out.println("JDBC 접속 객체 실패"); }
+			System.out.println("JDBC 접속 성공"); 
+		} else { System.out.println("JDBC 접속 실패"); }
 	}
 	
 	/*************************************
@@ -133,6 +133,31 @@ public class MemberDao extends JdbcConnector {
 				bean.setId(rs.getString("id"));
 				bean.setName(rs.getString("name"));
 				bean.setSalary(rs.getInt("salary"));
+				return bean;
+			}
+		} catch (Exception e) { e.printStackTrace(); } 
+		finally { JdbcClose(); }
+		return null;
+	}
+	
+	/****************************************
+	 * 세션 획득을 위한 로그인 정보 조회 : GetLoginInfo
+	 ****************************************/
+	public Member GetLoginInfo(String id, String name) {
+		String sql = " select * from members";
+		sql += " where id =? and name = ? ";
+		System.out.println(String.format("[%s] %s ", getClass(), sql));
+		try {
+			if(conn == null) { JdbcConnect(); }
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, name);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				Member bean = new Member();
+				bean.setId(id);
+				bean.setName(name);
 				return bean;
 			}
 		} catch (Exception e) { e.printStackTrace(); } 

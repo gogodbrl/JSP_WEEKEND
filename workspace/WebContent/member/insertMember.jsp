@@ -1,12 +1,14 @@
 <!-- 이 페이지가 자바어로 바뀌었을 때 Dao.BoardDao를 참조해서 가져오라는 의미 -->
 <%@page import="Bean.Member"%>
 <%@page import="Dao.MemberDao"%>
-
 <!-- (화살표퍼센트골뱅이)로 시작하는 문법을 지시어라고 한다. 
 language : 나중에 자바로 바뀐다는 의미
 contentType : 우리가 보는 최종 타입은 text/html 문서로 바뀐다는 의미
 pageEncoding : 이 페이지에서 보내거나 받아서 해석하는 방식은 UTF-8을 사용하겠다는 의미 -->
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@include file="./../common/common.jsp" %>
+<%@include file= "./../common/encoding.jsp" %>
 
 <!--  
 	1. 이 문법을 스크립트 릿(Scriptlit)이라고 한다. 
@@ -17,7 +19,6 @@ pageEncoding : 이 페이지에서 보내거나 받아서 해석하는 방식은
 	6. getParamter로 받는 기본값은 String이다.
 -->
 <%
-	request.setCharacterEncoding("utf-8");
 	MemberDao dao = new MemberDao();
 	String id = request.getParameter("id");
 	String name = request.getParameter("name");

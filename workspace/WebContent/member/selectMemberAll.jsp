@@ -2,6 +2,11 @@
 <%@page import="java.util.List"%>
 <%@page import="Dao.MemberDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@include file="./../common/common.jsp" %>
+<%@include file= "./../common/encoding.jsp" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +25,7 @@
 %>
 <h3>회원 목록 보기</h3>
 <h4><a href="<%=memberPath %>/insertMemberForm.jsp"> 신규사용자 등록 </a></h4>
+<h4><a href="<%=memberPath %>/loginForm.jsp"> 로그인하기 </a></h4>
 <table border ="1">
 	<tr>
 		<th>아이디</th>

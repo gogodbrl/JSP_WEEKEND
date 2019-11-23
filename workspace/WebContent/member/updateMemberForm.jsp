@@ -1,6 +1,10 @@
 <%@page import="Bean.Member"%>
 <%@page import="Dao.MemberDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@include file="./../common/common.jsp" %>
+<%@include file= "./../common/encoding.jsp" %>
+
 <%
 	String id = request.getParameter("id");
 	if(id == null || "null".equalsIgnoreCase(id)) {

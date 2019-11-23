@@ -1,7 +1,5 @@
 package Bean;
 
-import java.util.Date;
-
 public class Member {
 	/*************************************
 	 * Static
