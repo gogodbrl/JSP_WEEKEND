@@ -1,7 +1,9 @@
+<%@page import="Define.Define"%>
 <%@page import="Dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	
 	String noStr = request.getParameter("no");
 	if(noStr == null || "null".equalsIgnoreCase(noStr)) { 
 		out.print("게시글 번호값이 null 입니다.");
