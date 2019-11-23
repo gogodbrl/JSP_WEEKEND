@@ -13,13 +13,14 @@ public class Paging {
 	/** 현재 페이지 번호 **/
 	private int pageNumber = 0;
 	
-	/** 1페이지에 나오는 Row 갯수(기본 10개) **/
+	/** 가로로 쭉 나오는 Row 갯수 (기본 10개) **/
 	private int pageSize = 0;
 	
 	/** 한 페이지에 나오는 시작,끝 게시물의 인덱스 번호 **/
 	private int beginRow = 0;
 	private int endRow = 0;
 	
+	/** 세로로 쭉 나오는 페이지 갯수 ( 기본 10개)  **/
 	private int pageCount = 10;
 	private int beginPage = 0;
 	private int endPage = 0;
@@ -74,16 +75,19 @@ public class Paging {
 	}
 	
 	/*************************************
-	 * getPagingHtml
+	 * getPagingHtml()
 	 ************************************/
+	public String getPagingHtml() {
+		return pagingHtml;
+	}
 	public String getPagingHtml(String url) {
 		String result = "";
 		
-		String htmlStr = "<a href=%s?pageNumber=%s&pageSize=%s>%s</a>&nbsp;";
-		String firstPage = String.format(htmlStr, url, 1, pageSize, "맨처음");
-		String beforePage = String.format(htmlStr, url, (pageNumber -1), pageSize, "이전");
-		String nextPage = String.format(htmlStr, url, (endPage + 1), pageSize, "다음");
-		String lastPage = String.format(htmlStr, url, totalPage, pageSize, "맨끝");
+		String pagingLink = "<a href=%s?pageNumber=%s&pageSize=%s>%s</a>&nbsp;";
+		String firstPage = String.format(pagingLink, url, 1, pageSize, "맨처음");
+		String beforePage = String.format(pagingLink, url, (pageNumber -1), pageSize, "이전");
+		String nextPage = String.format(pagingLink, url, (endPage + 1), pageSize, "다음");
+		String lastPage = String.format(pagingLink, url, totalPage, pageSize, "맨끝");
 		
 		/** 맨처음, 이전 **/
 		if(pageNumber <= pageCount) {
@@ -96,11 +100,10 @@ public class Paging {
 		
 		/** 링크 영역 **/
 		String test = "<a href=%s?pageNumber=%d&pageSize=%s>%d</a>&nbsp;";
-		for(int index=beginPage; index <= endPage; index ++) {
+		for(int index = beginPage; index <= endPage; index ++) {
 			if(index == pageNumber) {
-				String linkHtml = "<font color='red'><b>%d</b></font>";
-				String redBoldHtml = String.format(linkHtml, index); 
-				result += String.format(htmlStr, url, index, pageSize, redBoldHtml);
+				String redBoldHtml = String.format("<font color='red'><b>%d</b></font>", index); 
+				result += String.format(pagingLink, url, index, pageSize, redBoldHtml);
 			} else {
 				String linkPage = String.format(test, url, index, pageSize, index);
 				result += linkPage;
@@ -202,9 +205,6 @@ public class Paging {
 	}
 	public void setUrl(String url) {
 		this.url = url;
-	}
-	public String getPagingHtml() {
-		return pagingHtml;
 	}
 	public void setPagingHtml(String pagingHtml) {
 		this.pagingHtml = pagingHtml;
