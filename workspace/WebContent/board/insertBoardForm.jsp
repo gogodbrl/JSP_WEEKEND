@@ -7,8 +7,11 @@
 	/** GET ENCODING UTF-8 **/
 	request.setCharacterEncoding("utf-8");
 	String boardwriter = null;
-	if(session != null){
+	if(loginInfo != null){
 		boardwriter = loginInfo.getId();
+	} else {
+		response.sendRedirect("../login/loginForm.jsp");
+		return ;
 	}
 %>
 <!DOCTYPE html>
@@ -18,6 +21,7 @@
 </head>
 <body>
 <form action= "insertBoard.jsp" method="post">
+	<input type="hidden" name="writer" value="<%=boardwriter%>">
 	<table border="1">
 		<tr> 
 			<td colspan="2">

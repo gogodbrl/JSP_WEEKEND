@@ -19,6 +19,7 @@
 		response.sendRedirect("selectBoardAll.jsp");
 	} else {
 		out.print("DB INSERT 실패 - 3초후 이동");
+		out.print("<meta http-equiv='refresh' content='3; url=./selectBoardAll.jsp'>");
 	}
 %>
 <!DOCTYPE html>

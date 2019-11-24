@@ -4,7 +4,7 @@ public class Board {
 	/*************************************
 	 * Static
 	 ************************************/
-	private static String FMT_BOARD_TOSTRING = "Member [no=%s, subject=%s, writer=%s, content=%s, regdate=%s]";
+	private static String FMT_BOARD_TOSTRING = "Member [no=%s, subject=%s, writer=%s, content=%s, regdate=%s, groupno=%s, orderno=%s, depth=%s]";
 	
 	/*************************************
 	 * Variable
@@ -16,6 +16,10 @@ public class Board {
 	private String content;
 	private String regdate;
 	
+	private int groupno;
+	private int orderno;
+	private int depth;
+	
 	/*************************************
 	 * Construct
 	 ************************************/
@@ -26,7 +30,7 @@ public class Board {
 	 ************************************/
 	@Override
 	public String toString() {
-		return String.format(FMT_BOARD_TOSTRING, no, subject, writer, content, regdate);
+		return String.format(FMT_BOARD_TOSTRING, no, subject, writer, content, regdate, groupno, orderno, depth);
 	}
 	
 	
@@ -62,5 +66,23 @@ public class Board {
 	}
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
+	}
+	public int getGroupno() {
+		return groupno;
+	}
+	public void setGroupno(int groupno) {
+		this.groupno = groupno;
+	}
+	public int getOrderno() {
+		return orderno;
+	}
+	public void setOrderno(int orderno) {
+		this.orderno = orderno;
+	}
+	public int getDepth() {
+		return depth;
+	}
+	public void setDepth(int depth) {
+		this.depth = depth;
 	}
 }

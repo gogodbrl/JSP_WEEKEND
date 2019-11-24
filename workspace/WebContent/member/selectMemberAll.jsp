@@ -1,3 +1,4 @@
+<%@page import="Util.Paging"%>
 <%@page import="Bean.Member"%>
 <%@page import="java.util.List"%>
 <%@page import="Dao.MemberDao"%>
@@ -6,25 +7,49 @@
 <%@include file="./../common/common.jsp" %>
 <%@include file= "./../common/encoding.jsp" %>
 
+<%
+	/** GET PROJECT NAME ( /WebProject라는 String 반환 ) **/
+	String contextPath = request.getContextPath();
+	String memberPath = contextPath + "/member";
+	
+	if(loginInfo == null) {
+		response.sendRedirect("../login/loginForm.jsp");
+		return ;
+	} 
+%>
+
+<%
+	MemberDao dao = new MemberDao();
+	String pageNumber = request.getParameter("pageNumber");
+	String pageSize = request.getParameter("pageSize");
+	int totalCount = dao.SelectTotalUploadCount();
+	String url = "../member/selectMemberAll.jsp";
+		
+	Paging pageInfo = new Paging(pageNumber, pageSize, totalCount, url);
+%>
+
+<%
+	/** SELECT ALL로 조회한다.**/
+	List<Member> memberList = dao.SelectMemberAll(pageInfo.getBeginRow(), pageInfo.getEndRow());
+	if(memberList == null){
+		out.print("memberList is null"); 
+		return ;
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 </head>
 <body>
-<%
-	/** GET PROJECT NAME ( /WebProject라는 String 반환 ) **/
-	String contextPath = request.getContextPath();
-	String memberPath = contextPath + "/member";
-//	out.print(memberPath);
-
-	/** SELECT ALL로 조회한다.**/
-	MemberDao dao = new MemberDao();
-	List<Member> memberList = dao.SelectMemberAll();
-%>
 <h3>회원 목록 보기</h3>
 <h4><a href="<%=memberPath %>/insertMemberForm.jsp"> 신규사용자 등록 </a></h4>
 <table border ="1">
+	<tr>
+		<td colspan="5"></td>
+		<td colspan="3"><b><%=pageInfo.getPagingStatus() %></b></td>
+	</tr>
 	<tr>
 		<th>아이디</th>
 		<th>이름</th>
@@ -53,6 +78,9 @@
 		<td><a href="<%=memberPath %>/deleteMember.jsp?id=<%=member.getId()%>">삭제</a></td>
 	</tr>
 	<% } %>
+	<tr>
+		<td colspan="8"><%=pageInfo.getPagingHtml() %></td>
+	</tr>
 </table>
 </body>
 </html>

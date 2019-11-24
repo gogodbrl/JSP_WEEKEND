@@ -80,6 +80,9 @@
 			out.print("<td><font color='gray'>삭제</font></td>");
 		} 
 		 %>
+		 <td><%=board.getGroupno() %></td>
+		 <td><%=board.getOrderno() %></td>
+		 <td><%=board.getDepth() %></td>
 	</tr>
 	<% } %> 
 	<tr>

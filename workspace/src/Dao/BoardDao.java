@@ -17,14 +17,35 @@ public class BoardDao extends JdbcConnector {
 	}
 	
 	/*************************************
-	 * 게시물 추가 : InsertBoard
-	 * 게시물 수정 : UpdateBoard
-	 * 게시물 삭제 : DeleteBoard
+	 * 게시물 추가 		: InsertBoard
+	 * 게시물 댓글 추가 	: InsertReplyBoard
+	 * 게시물 수정 		: UpdateBoard
+	 * 게시물 삭제 		: DeleteBoard
 	 *************************************/
 	public int InsertBoard(Board bean) {
 		int cnt = -1;
-		String sql = "insert into boards(no, subject, writer, content)";
-		sql += " values(SEQTEST.nextval,?,?,?)";
+		String sql = "insert into boards(no, subject, writer, content, groupno, orderno, depth)";
+		sql += " values(SEQTEST.nextval,?,?,?, SEQTEST.currval, 0, 0)";
+		System.out.println("[InsertBoard] "+sql);
+		try {
+			if(conn == null) { JdbcConnect(); }
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, bean.getSubject());
+			pstmt.setString(2, bean.getWriter());
+			pstmt.setString(3, bean.getContent());
+			cnt = pstmt.executeUpdate();
+			conn.commit();
+		} catch (Exception e) {
+			RollBack();
+			e.printStackTrace();
+		} finally { JdbcClose(); }
+		return cnt;
+	}
+	public int InsertReplyBoard(Board bean) {
+		int cnt = -1;
+		String sql = "insert into boards(no, subject, writer, content, regdate, groupno, orderno, depth)";
+		sql += " values(SEQTEST.nextval,?,?,?, sysdate, SEQTEST.currval, 0, 0)";
 		System.out.println("[InsertBoard] "+sql);
 		try {
 			if(conn == null) { JdbcConnect(); }
@@ -103,6 +124,9 @@ public class BoardDao extends JdbcConnector {
 				bean.setRegdate(String.valueOf(rs.getDate("regdate")) );
 				bean.setSubject(rs.getString("subject"));
 				bean.setWriter(rs.getString("writer"));
+				bean.setGroupno(rs.getInt("groupno"));
+				bean.setOrderno(rs.getInt("orderno"));
+				bean.setDepth(rs.getInt("depth"));
 				selectList.add(bean);
 			}
 			return selectList;
@@ -110,8 +134,8 @@ public class BoardDao extends JdbcConnector {
 		return null;
 	}
 	public List<Board> SelectBoardAll(int beginRow, int endRow) {
-		String sql = " select no, subject, writer, content, regdate"
-				+ " from (select no, subject, writer, content, regdate, "
+		String sql = " select no, subject, writer, content, regdate, groupno, orderno, depth"
+				+ " from (select no, subject, writer, content, regdate, groupno, orderno, depth, "
 				+ " rank() over(order by no desc) as ranking"
 				+ " from boards ) "
 				+ " where ranking between ? and ? ";
@@ -132,9 +156,12 @@ public class BoardDao extends JdbcConnector {
 				Board bean = new Board();
 				bean.setNo(rs.getInt("no"));
 				bean.setContent(rs.getString("content"));
+				bean.setWriter(rs.getString("writer"));
 				bean.setRegdate(String.valueOf(rs.getDate("regdate")) );
 				bean.setSubject(rs.getString("subject"));
-				bean.setWriter(rs.getString("writer"));
+				bean.setGroupno(rs.getInt("groupno"));
+				bean.setOrderno(rs.getInt("orderno"));
+				bean.setDepth(rs.getInt("depth"));
 				selectList.add(bean);
 			}
 			return selectList;

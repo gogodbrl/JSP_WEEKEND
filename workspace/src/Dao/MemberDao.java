@@ -89,7 +89,8 @@ public class MemberDao extends JdbcConnector {
 	}
 	
 	/*************************************
-	 * 모든 회원 조회 : SelectMemberAll
+	 * 모든 회원 조회 : SelectMemberAll()
+	 * 모든 회원 조회 : SelectMemberAll(int beginRow, int endRow)
 	 * 회원 1명만 조회 : SelectMemberOne
 	 ************************************/
 	public List<Member> SelectMemberAll() {
@@ -115,6 +116,38 @@ public class MemberDao extends JdbcConnector {
 			return list;
 		} catch (Exception e) { e.printStackTrace(); } 
 		finally { JdbcClose(); }
+		return null;
+	}
+	public List<Member> SelectMemberAll(int beginRow, int endRow) {
+		String sql = " select id, name, salary, hiredate, address"
+				+ " from (select id, name, salary, hiredate, address, "
+				+ " rank() over(order by id desc) as ranking"
+				+ " from members ) "
+				+ " where ranking between ? and ? ";
+		
+		System.out.println("[SelectBoardAll] "+sql);
+		try {
+			if(conn == null) { JdbcConnect(); }
+			if(beginRow < 0) { System.out.println("beginRow is under zero"); return null; }
+			if(endRow < 0) { System.out.println("endRow is under zero"); return null; }
+			
+			List<Member> selectList = new ArrayList<Member>();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, beginRow);
+			pstmt.setInt(2, endRow);
+			
+			rs = pstmt.executeQuery(); 
+			while(rs.next()) {
+				Member bean = new Member();
+				bean.setAddress(rs.getString("address"));
+				bean.setHiredate(String.valueOf(rs.getDate("hiredate")));
+				bean.setId(rs.getString("id"));
+				bean.setName(rs.getString("name"));
+				bean.setSalary(rs.getInt("salary"));
+				selectList.add(bean);
+			}
+			return selectList;
+		} catch (Exception e) {	e.printStackTrace(); }
 		return null;
 	}
 	public Member SelectMemberOne(String id) {
@@ -164,4 +197,22 @@ public class MemberDao extends JdbcConnector {
 		finally { JdbcClose(); }
 		return null;
 	}
+	/*************************************
+	 * 모든 멤버 수 조회 : SelectTotalUploadCount()
+	 ************************************/
+	public int SelectTotalUploadCount() {
+		String sql = "select count(*) from members";
+		System.out.println("[SelectTotalUploadCount] "+sql);
+		int result = -1;
+		try {
+			if(conn == null) { JdbcConnect(); }
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery(); 
+			if(rs.next()){
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) { e.printStackTrace(); }
+		return result;
+	}
+	
 }

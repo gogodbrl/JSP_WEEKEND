@@ -97,7 +97,7 @@ public class Paging {
 			result += firstPage;
 			result += beforePage;
 		}
-		
+
 		/** 링크 영역 **/
 		String test = "<a href=%s?pageNumber=%d&pageSize=%s>%d</a>&nbsp;";
 		for(int index = beginPage; index <= endPage; index ++) {
