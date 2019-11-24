@@ -4,18 +4,36 @@
 <%@page import="Dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!-- Get Page Object -->
-<%@ include file= "../common/paging.jsp" %>
+<%@include file="./../common/common.jsp" %>
+<%@include file= "./../common/encoding.jsp" %>
 
-<!-- getSelectAll -->
+<!-- 세션정보 가져오기 -->
 <%
-	request.setCharacterEncoding("utf-8");
-
 	String contextPath = request.getContextPath();
 	String boardPath = contextPath + "/board";
 	
+	if(loginInfo == null) {
+		response.sendRedirect("../login/loginForm.jsp");
+		return ;
+	} 
+%>
+<!-- 페이지 가져오기 -->
+<%
 	BoardDao dao = new BoardDao();
-	List<Board> boardList = dao.SelectBoardAll(pageInfo.getBeginRow(),pageInfo.getEndRow());
+	String pageNumber = request.getParameter("pageNumber");
+	String pageSize = request.getParameter("pageSize");
+	int totalCount = dao.SelectTotalUploadCount();
+	String url = "../board/selectBoardAll.jsp";
+		
+	Paging pageInfo = new Paging(pageNumber, pageSize, totalCount, url);
+%>
+<!-- 전체 리스트 가져오기 -->
+<% 
+	List<Board> boardList = dao.SelectBoardAll(pageInfo.getBeginRow(), pageInfo.getEndRow());
+	if(boardList == null) { 
+		out.print("boardList is null"); 
+		return ;
+	}
 %>
 
 <!DOCTYPE html>
@@ -28,13 +46,19 @@
 <h4><a href="<%=boardPath %>/insertBoardForm.jsp"> 신규 게시글 등록 </a></h4>
 <table border ="1">
 	<tr>
-		<td>게시글번호</td>
-		<td>제목</td>
-		<td>작성자</td>
-		<td>내용</td>
-		<td>등록날짜</td>
+		<td colspan="5"></td>
+		<td colspan="3"><b><%=pageInfo.getPagingStatus() %></b></td>
 	</tr>
-
+	<tr>
+		<th>게시글번호</th>
+		<th>제목</th>
+		<th>작성자</th>
+		<th>내용</th>
+		<th>등록날짜</th>
+		<th>상세</th>
+		<th>수정</th>
+		<th>삭제</th>
+	</tr>
 	<!-- 이렇게 스크립트릿을 사용하면 값을 리스트로 출력 가능하다. -->
 	<% for(Board board : boardList) { %>
 	<tr>
@@ -46,12 +70,19 @@
 		<td><%=board.getContent() %></td>
 		<td><%=board.getRegdate() %></td>
 		<td><a href="<%=boardPath %>/selectBoardDetail.jsp?no=<%=board.getNo()%>">상세</a></td>
-		<td><a href="<%=boardPath %>/updateBoardForm.jsp?no=<%=board.getNo()%>">수정</a></td>
-		<td><a href="<%=boardPath %>/deleteBoard.jsp?no=<%=board.getNo()%>">삭제</a></td>
+		<% 
+			if(board.getWriter().trim().equals(loginInfo.getId().trim())){
+				out.print(String.format("<td><a href='%s/updateBoardForm.jsp?no=%s'>수정</a></td>", boardPath, board.getNo()));
+				out.print(String.format("<td><a href='%s/updateBoardForm.jsp?no=%s'>삭제</a></td>", boardPath, board.getNo()));
+			} else { 
+				out.print("<td><font color='gray'>수정</font></td>");
+				out.print("<td><font color='gray'>삭제</font></td>");
+			} 
+		 %>
 	</tr>
-	<% } %>
+	<% } %> 
 	<tr>
-		<td colspan="8"><%=pageInfo.getPagingHtml(url) %></td>
+		<td colspan="8"><%=pageInfo.getPagingHtml() %></td>
 	</tr>
 </table>
 </body>

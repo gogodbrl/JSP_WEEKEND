@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- 다른 JSP파일을 포함시키려면 include 지시어를 사용하면 된다. -->
-<%@include file="./../common/common.jsp" %>
 <%@include file= "./../common/encoding.jsp" %>
 
 <!DOCTYPE html>

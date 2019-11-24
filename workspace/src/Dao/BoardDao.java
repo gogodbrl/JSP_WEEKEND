@@ -119,7 +119,9 @@ public class BoardDao extends JdbcConnector {
 		System.out.println("[SelectBoardAll] "+sql);
 		try {
 			if(conn == null) { JdbcConnect(); }
-
+			if(beginRow < 0) { System.out.println("beginRow is under zero"); return null; }
+			if(endRow < 0) { System.out.println("endRow is under zero"); return null; }
+			
 			List<Board> selectList = new ArrayList<Board>();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, beginRow);
@@ -163,4 +165,22 @@ public class BoardDao extends JdbcConnector {
 		finally { JdbcClose(); }
 		return null;
 	}
+	/*************************************
+	 * 모든 게시물 갯수 조회 : SelectTotalUploadCount()
+	 ************************************/
+	public int SelectTotalUploadCount() {
+		String sql = "select count(*) from boards";
+		System.out.println("[SelectTotalUploadCount] "+sql);
+		int result = -1;
+		try {
+			if(conn == null) { JdbcConnect(); }
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery(); 
+			if(rs.next()){
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) { e.printStackTrace(); }
+		return result;
+	}
+	
 }
