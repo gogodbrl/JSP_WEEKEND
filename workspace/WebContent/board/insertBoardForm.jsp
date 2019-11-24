@@ -1,4 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@include file="./../common/common.jsp" %>
+<%@include file= "./../common/encoding.jsp" %>
+
+<%
+	/** GET ENCODING UTF-8 **/
+	request.setCharacterEncoding("utf-8");
+	String boardwriter = null;
+	if(session != null){
+		boardwriter = loginInfo.getId();
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +30,7 @@
 		</tr>
 		<tr>
 			<td>작성자</td>
-			<td><input type="text" name="writer"></td>
+			<td><%=boardwriter %></td>
 		</tr>
 		<tr>
 			<td>내용</td>

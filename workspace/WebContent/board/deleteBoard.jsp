@@ -17,8 +17,11 @@
 	BoardDao dao = new BoardDao();
 	int cnt = dao.DeleteBoard(no);
 	
+	String pageNumber = request.getParameter("pageNumber");
+	String pageSize = request.getParameter("pageSize");
+	
 	if(cnt > 0) { 
-		response.sendRedirect("selectBoardAll.jsp");
+		response.sendRedirect(String.format("./selectBoardAll.jsp?pageNumber=%s&pageSize=%s", pageNumber, pageSize));	
 	} else {
 		out.print("DB DELETE 실패 - 3초후 이동");
 		out.print("<meta http-equiv='refresh' content='3; url=./selectBoardAll.jsp'>");

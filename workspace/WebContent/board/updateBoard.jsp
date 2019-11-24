@@ -15,6 +15,9 @@
 	String content = request.getParameter("content");
 	String regdate = request.getParameter("regdate");
 	
+	String pageNumber = request.getParameter("pageNumber");
+	String pageSize = request.getParameter("pageSize");
+	
 	if("null".equalsIgnoreCase(regdate)){
 		Date date = new Date();
 		regdate = new SimpleDateFormat("yyyyMMdd").format(date);
@@ -30,7 +33,7 @@
 	BoardDao dao = new BoardDao();
 	int cnt = dao.UpdateBoard(board);
 	if(cnt > 0) { 
-		response.sendRedirect("selectBoardAll.jsp");
+		response.sendRedirect(String.format("./selectBoardAll.jsp?pageNumber=%s&pageSize=%s", pageNumber, pageSize));
 	} else {
 		out.print("DB UPDATE 실패 - 3초후 이동");
 		out.print("<meta http-equiv='refresh' content='3; url=./selectBoardAll.jsp'>");

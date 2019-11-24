@@ -31,7 +31,12 @@
 	<input type="hidden" name="no" value="<%=boardNo %>">
 	<input type="hidden" name="regdate" value="<%=boardRegdate %>">
 	<input type="hidden" name="writer" value="<%=boardwriter %>">
-	<table>
+	
+	<!-- 제가 넘겨드릴 때 pageNumber랑 pageSize도 넘겨드리겠습니다 라는 의미!!! -->
+	<input type="hidden" name="pageNumber" value="<%= request.getParameter("pageNumber") %>">
+	<input type="hidden" name="pageSize" value="<%= request.getParameter("pageSize") %>">
+	
+	<table border="1">
 		<tr>
 			<th>게시글 번호</th>
 			<!--  이렇게 하면 DB에서 가져온 이름이 그대로 들어가있다. -->

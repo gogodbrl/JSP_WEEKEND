@@ -71,13 +71,14 @@
 		<td><%=board.getRegdate() %></td>
 		<td><a href="<%=boardPath %>/selectBoardDetail.jsp?no=<%=board.getNo()%>">상세</a></td>
 		<% 
-			if(board.getWriter().trim().equals(loginInfo.getId().trim())){
-				out.print(String.format("<td><a href='%s/updateBoardForm.jsp?no=%s'>수정</a></td>", boardPath, board.getNo()));
-				out.print(String.format("<td><a href='%s/updateBoardForm.jsp?no=%s'>삭제</a></td>", boardPath, board.getNo()));
-			} else { 
-				out.print("<td><font color='gray'>수정</font></td>");
-				out.print("<td><font color='gray'>삭제</font></td>");
-			} 
+		if(board.getWriter().trim().equals(loginInfo.getId().trim())){
+			/** 이런식으로하면 다른페이지에 넘길 때 이렇게 인자값을 넘기면 받는쪽에서 이전페이지의 정보를 가질 수 있고, 다시 넘겨줄 수도 있다. **/
+			out.print(String.format("<td><a href='%s/updateBoardForm.jsp?no=%s&pageNumber=%s&pageSize=%s'>수정</a></td>", boardPath, board.getNo(), pageInfo.getPageNumber(), pageInfo.getPageSize()));
+			out.print(String.format("<td><a href='%s/deleteBoard.jsp?no=%s&pageNumber=%s&pageSize=%s'>삭제</a></td>", boardPath, board.getNo(), pageInfo.getPageNumber(), pageInfo.getPageSize()));
+		} else { 
+			out.print("<td><font color='gray'>수정</font></td>");
+			out.print("<td><font color='gray'>삭제</font></td>");
+		} 
 		 %>
 	</tr>
 	<% } %> 
