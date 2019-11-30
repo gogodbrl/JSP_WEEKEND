@@ -43,24 +43,43 @@ public class BoardDao extends JdbcConnector {
 		return cnt;
 	}
 	public int InsertReplyBoard(Board bean) {
-		int cnt = -1;
-		String sql = "insert into boards(no, subject, writer, content, regdate, groupno, orderno, depth)";
-		sql += " values(SEQTEST.nextval,?,?,?, sysdate, SEQTEST.currval, 0, 0)";
-		System.out.println("[InsertBoard] "+sql);
+		int insert_cnt = -1;
+		int update_cnt = -1;
+		String sql_update = " update boards ";
+		sql_update += " set orderno = orderno+1 ";
+		sql_update += " where groupno = ? and orderno > ? ";
+		
+		String sql_insert = " insert into boards(no, subject, writer, content, regdate, groupno, orderno, depth)";
+		sql_insert += " values(SEQTEST.nextval,?,?,?,sysdate,?,?,?)";
+		
+		System.out.println("[InsertReplyBoard] "+sql_update);
+		System.out.println("[InsertReplyBoard] "+sql_insert);
 		try {
 			if(conn == null) { JdbcConnect(); }
 			
-			pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql_update);
+			pstmt.setInt(1, bean.getGroupno());
+			pstmt.setInt(2, bean.getOrderno());
+			update_cnt = pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement(sql_insert);
 			pstmt.setString(1, bean.getSubject());
 			pstmt.setString(2, bean.getWriter());
 			pstmt.setString(3, bean.getContent());
-			cnt = pstmt.executeUpdate();
+			pstmt.setInt(4, bean.getGroupno());
+			pstmt.setInt(5, bean.getOrderno() + 1);
+			pstmt.setInt(6, bean.getDepth() + 1);
+			insert_cnt = pstmt.executeUpdate();
+			
+			if(update_cnt < -1 || insert_cnt < -1) {
+				return -1;
+			}
 			conn.commit();
 		} catch (Exception e) {
 			RollBack();
 			e.printStackTrace();
 		} finally { JdbcClose(); }
-		return cnt;
+		return insert_cnt;
 	}
 	public int UpdateBoard(Board bean) {
 		int cnt = -1;
@@ -138,7 +157,8 @@ public class BoardDao extends JdbcConnector {
 				+ " from (select no, subject, writer, content, regdate, groupno, orderno, depth, "
 				+ " rank() over(order by no desc) as ranking"
 				+ " from boards ) "
-				+ " where ranking between ? and ? ";
+				+ " where ranking between ? and ? "
+				+ " order by groupno desc, orderno asc, depth asc";
 		
 		System.out.println("[SelectBoardAll] "+sql);
 		try {

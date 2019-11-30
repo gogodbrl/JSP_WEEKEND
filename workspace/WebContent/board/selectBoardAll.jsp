@@ -47,7 +47,7 @@
 <table border ="1">
 	<tr>
 		<td colspan="5"></td>
-		<td colspan="3"><b><%=pageInfo.getPagingStatus() %></b></td>
+		<td colspan="4"><b><%=pageInfo.getPagingStatus() %></b></td>
 	</tr>
 	<tr>
 		<th>게시글번호</th>
@@ -58,6 +58,10 @@
 		<th>상세</th>
 		<th>수정</th>
 		<th>삭제</th>
+		<th>답글</th>
+		<th>groupno</th>
+		<th>orderno</th>
+		<th>depth</th>
 	</tr>
 	<!-- 이렇게 스크립트릿을 사용하면 값을 리스트로 출력 가능하다. -->
 	<% for(Board board : boardList) { %>
@@ -71,22 +75,26 @@
 		<td><%=board.getRegdate() %></td>
 		<td><a href="<%=boardPath %>/selectBoardDetail.jsp?no=<%=board.getNo()%>">상세</a></td>
 		<% 
-		if(board.getWriter().trim().equals(loginInfo.getId().trim())){
-			/** 이런식으로하면 다른페이지에 넘길 때 이렇게 인자값을 넘기면 받는쪽에서 이전페이지의 정보를 가질 수 있고, 다시 넘겨줄 수도 있다. **/
-			out.print(String.format("<td><a href='%s/updateBoardForm.jsp?no=%s&pageNumber=%s&pageSize=%s'>수정</a></td>", boardPath, board.getNo(), pageInfo.getPageNumber(), pageInfo.getPageSize()));
-			out.print(String.format("<td><a href='%s/deleteBoard.jsp?no=%s&pageNumber=%s&pageSize=%s'>삭제</a></td>", boardPath, board.getNo(), pageInfo.getPageNumber(), pageInfo.getPageSize()));
-		} else { 
-			out.print("<td><font color='gray'>수정</font></td>");
-			out.print("<td><font color='gray'>삭제</font></td>");
-		} 
+			if(board.getWriter().trim().equals(loginInfo.getId().trim())){
+				/** 이런식으로하면 다른페이지에 넘길 때 이렇게 인자값을 넘기면 받는쪽에서 이전페이지의 정보를 가질 수 있고, 다시 넘겨줄 수도 있다. **/
+				out.print(String.format("<td><a href='%s/updateBoardForm.jsp?no=%s&pageNumber=%s&pageSize=%s'>수정</a></td>", boardPath, board.getNo(), pageInfo.getPageNumber(), pageInfo.getPageSize()));
+				out.print(String.format("<td><a href='%s/deleteBoard.jsp?no=%s&pageNumber=%s&pageSize=%s'>삭제</a></td>", boardPath, board.getNo(), pageInfo.getPageNumber(), pageInfo.getPageSize()));
+			} else { 
+				out.print("<td><font color='gray'>수정</font></td>");
+				out.print("<td><font color='gray'>삭제</font></td>");
+			} 
 		 %>
+		 <%
+		 	out.print(String.format("<td><a href='%s/ReplyForm.jsp?no=%s&pageNumber=%s&groupno=%s&orderno=%s&depth=%s'>답글</a></td>", boardPath, board.getNo(), pageInfo.getPageNumber(), board.getGroupno(), board.getOrderno(), board.getDepth()));
+		 %>
+		 
 		 <td><%=board.getGroupno() %></td>
 		 <td><%=board.getOrderno() %></td>
 		 <td><%=board.getDepth() %></td>
 	</tr>
 	<% } %> 
 	<tr>
-		<td colspan="8"><%=pageInfo.getPagingHtml() %></td>
+		<td colspan="9"><%=pageInfo.getPagingHtml() %></td>
 	</tr>
 </table>
 </body>
