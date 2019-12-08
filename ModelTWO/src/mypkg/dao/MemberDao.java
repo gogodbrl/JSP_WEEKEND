@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import mypkg.bean.Member;
 
@@ -108,7 +110,92 @@ public class MemberDao {
 				e.printStackTrace();
 			}
 		}
-	} 
-	
+	}
+
+	public List<Member> SelectAll() {
+		String sql = " select * from members " ; 
+		PreparedStatement pstmt = null ;
 		
+		ResultSet rs = null ;
+		List<Member> lists = new ArrayList<Member>() ;
+		
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(sql) ;
+			rs = pstmt.executeQuery() ;
+			
+			while(rs.next()) {
+				Member bean = new Member();
+				
+				bean.setId( rs.getString("id") ) ;
+				bean.setName( rs.getString("name") ) ;
+				bean.setPassword( rs.getString("password") ) ;				
+				
+				lists.add( bean ) ;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs != null) { rs.close(); }
+				if(pstmt != null) { pstmt.close(); }
+				if(conn != null) { conn.close(); }
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return lists ; 
+	}
+	
+	public int UpdateData(Member member) {
+		String sql = " update members set name = ?, password = ? ";
+		sql += " where id = ? ";
+		
+		PreparedStatement pstmt = null ;
+		int cnt = -1;
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(sql) ;
+			
+			pstmt.setString(1, member.getName());
+			pstmt.setString(2, member.getPassword());
+			pstmt.setString(3, member.getId());
+			
+			cnt = pstmt.executeUpdate();
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) { pstmt.close(); }
+				if(conn != null) { conn.close(); }
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return cnt;
+	}
+
+	public int DeleteDate(String id) {
+		String sql = " delete * from members where id = ? " ; 
+		PreparedStatement pstmt = null ;
+		int cnt = -1;
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(sql) ;
+			pstmt.setString(1, id);
+			cnt = pstmt.executeUpdate();
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) { pstmt.close(); }
+				if(conn != null) { conn.close(); }
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return cnt;
+	}
 }

@@ -6,34 +6,33 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebInitParam;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
-import mypkg.controller.SuperController;
+import mypkg.controller.SuperInterface;
 
-@WebServlet(
-		initParams = { 
-			@WebInitParam(name = "configFile", value = "/WEB-INF/commandList.properties")
-})
 public class GetProperties extends HttpServlet {
+	/*****************************************************
+	 * Static
+	 *****************************************************/
 	private static final long serialVersionUID = 1L;
 	
-	public GetProperties(Map<String, SuperController> actionMaps) throws ServletException {
+	/*****************************************************
+	 * Constructor
+	 *****************************************************/
+	public GetProperties(Map<String, SuperInterface> actionMaps, String configFilePath) throws ServletException {
 		try {
-			Properties prop = LoadProperties();
+			Properties prop = LoadProperties(configFilePath);
 			BindProperties(actionMaps, prop);
-			System.out.println( "맵 사이즈 : " + actionMaps.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public Properties LoadProperties() throws Exception {
+	/*****************************************************
+	 * LoadProperties
+	 *****************************************************/
+	public Properties LoadProperties(String configFilePath) throws Exception {
 		/** Load Properties **/
-		String configFile = getInitParameter("configFile");
-		String configFilePath = getServletContext().getRealPath(configFile);
-		
 		Properties prop = new Properties();
 		FileInputStream fis = new FileInputStream(configFilePath);
 		prop.load(fis);
@@ -42,16 +41,18 @@ public class GetProperties extends HttpServlet {
 		return prop;
 	}
 	
-	public Map<String, SuperController> BindProperties(Map<String, SuperController> actionMaps, Properties prop) throws Exception {
+	/*****************************************************
+	 * BindProperties
+	 *****************************************************/
+	public void BindProperties(Map<String, SuperInterface> actionMaps, Properties prop) throws Exception {
 		/** Put Properties to actionMaps **/
 		Iterator<Object> keyIter = prop.keySet().iterator();
 		while (keyIter.hasNext()) {
 			String command = (String) keyIter.next();
 			String handlerClassName = prop.getProperty(command);
 			Class<?> handlerClass = Class.forName(handlerClassName);
-			SuperController handlerInstance = (SuperController) handlerClass.newInstance();
+			SuperInterface handlerInstance = (SuperInterface) handlerClass.newInstance();
 			actionMaps.put(command, handlerInstance);
 		}
-		return null;
 	}
 }

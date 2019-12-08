@@ -7,9 +7,6 @@
 	//contextPath = /ModelTWO/MiniShopCtrl
 	String MyCtrlByForm = contextPath + commandName;
 	String MyCtrlCommand = MyCtrlByForm + "?command=";
-	
-	out.print( MyCtrlByForm + "<br>");
-	out.print( MyCtrlCommand + "<br>");
 %>
 <!DOCTYPE html>
 <html>

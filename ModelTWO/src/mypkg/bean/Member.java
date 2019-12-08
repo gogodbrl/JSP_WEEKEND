@@ -1,14 +1,19 @@
 package mypkg.bean;
 
 public class Member {
+	/*****************************************************
+	 * Variable
+	 *****************************************************/
 	private String id ;
 	private String password ;
 	private String name ;
 	
+	/*****************************************************
+	 * Getter & Setter
+	 *****************************************************/
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", password=" + password + ", name=" + name
-				+ "]";
+		return String.format("Member [id=%s, password=%s, name=%s]", id, password, name);
 	}
 	public String getId() {
 		return id;
